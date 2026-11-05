@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bad Plot Privacy Policy</title>
+<style>
+  /* Same look as the app: one color field, a cream card floating on it,
+     Baloo 2 over Figtree, rounded everything. Colors mirror
+     src/constants/tokens.ts, light and dark. */
+  :root {
+    --field: #7690C6;
+    --card: #FFF6E9;
+    --raised: #FFFFFF;
+    --ink: #2A2140;
+    --muted: #6E6486;
+    --divider: rgba(42, 33, 64, 0.10);
+    --border: rgba(42, 33, 64, 0.22);
+    --butter: #E7B24E;
+    --mint: #73B7A2;
+    --on-accent: #2A2140;
+    --on-mint: #123E35;
+    --link: #3B45C9;
+    --shadow: 0 14px 26px rgba(42, 33, 64, 0.16);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --field: #34467A;
+      --card: #1E182D;
+      --raised: #2E2646;
+      --ink: #F6ECDD;
+      --muted: #B0A6C6;
+      --divider: rgba(246, 236, 221, 0.10);
+      --border: rgba(246, 236, 221, 0.26);
+      --link: #AAB4FF;
+      --shadow: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--field);
+    color: var(--ink);
+    font-family: 'Figtree', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px 16px 48px;
+  }
+  .card {
+    background: var(--card);
+    border-radius: 30px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .band {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 24px 32px 16px;
+  }
+  .wordmark {
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    letter-spacing: -0.3px;
+    line-height: 1.1;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .doc-label {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    color: var(--on-accent);
+    background: var(--butter);
+    border-radius: 999px;
+    padding: 6px 14px;
+  }
+  .hero {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 8px 32px 28px;
+    border-bottom: 1px solid var(--divider);
+  }
+  .hero img {
+    width: 112px;
+    height: auto;
+    flex: none;
+  }
+  .meta {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+  h1 {
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: clamp(28px, 6vw, 38px);
+    letter-spacing: -0.3px;
+    line-height: 1.15;
+    text-wrap: balance;
+    margin: 0 0 8px;
+  }
+  .lede {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0;
+    max-width: 60ch;
+  }
+  section {
+    padding: 28px 32px;
+    border-bottom: 1px solid var(--divider);
+  }
+  .tag {
+    display: inline-block;
+    background: var(--mint);
+    color: var(--on-mint);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 6px 14px;
+    margin-bottom: 14px;
+  }
+  h2 {
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 23px;
+    line-height: 1.2;
+    margin: 0 0 12px;
+    text-wrap: balance;
+  }
+  p {
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 0 0 14px;
+    max-width: 62ch;
+  }
+  p:last-child { margin-bottom: 0; }
+  ul {
+    margin: 0 0 14px;
+    padding-left: 20px;
+    max-width: 62ch;
+  }
+  ul:last-child { margin-bottom: 0; }
+  li {
+    font-size: 15px;
+    line-height: 1.65;
+    margin-bottom: 8px;
+  }
+  li:last-child { margin-bottom: 0; }
+  strong { font-weight: 700; }
+  a { color: var(--link); font-weight: 700; }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 4px 0;
+    font-size: 14px;
+  }
+  .data-table th {
+    text-align: left;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 12px 10px 0;
+    border-bottom: 1.5px solid var(--border);
+  }
+  .data-table td {
+    padding: 12px 12px 12px 0;
+    border-bottom: 1px solid var(--divider);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .faq-item { margin-bottom: 22px; }
+  .faq-item:last-child { margin-bottom: 0; }
+  .faq-q {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  .contact-block {
+    background: var(--raised);
+    border: 1.5px solid var(--border);
+    border-radius: 18px;
+    padding: 18px 20px;
+    margin-top: 16px;
+  }
+  .contact-block .label {
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  footer {
+    padding: 22px 32px 26px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  @media (max-width: 520px) {
+    .band { padding: 20px 20px 12px; }
+    .hero { flex-direction: column; align-items: flex-start; gap: 12px; padding: 4px 20px 24px; }
+    .hero img { width: 88px; }
+    section { padding: 24px 20px; }
+    footer { padding: 20px; }
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="page">
+  <div class="card">
+  <div class="band">
+    <a class="wordmark" href="/">Bad Plot</a>
+    <div class="doc-label">Privacy Policy</div>
+  </div>
+
+  <div class="hero">
+    <img src="/kernel.svg" alt="Kernel, the Bad Plot mascot: a smiling popcorn kernel behind a striped popcorn box" width="112" height="111">
+    <div>
+      <p class="meta">Effective October 13, 2026 · Last updated October 13, 2026</p>
+      <h1>We don't collect your personal data.</h1>
+      <p class="lede">Bad Plot is a daily movie-guessing game. This page explains, plainly, what the app stores and where. It's a very short list. Everything about your play stays on your device. Two things involve the network: feedback, which is only sent if you choose to send it, and a simple visit count on this website.</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="tag">What we store</div>
+    <h2>Everything lives on your device</h2>
+    <p>Bad Plot doesn't require an account and doesn't have a server of its own. Nothing about your play is sent over the network. Your progress is saved locally on your phone using standard on-device storage, the same way a note-taking app remembers your notes.</p>
+    <table class="data-table">
+      <thead>
+        <tr><th>Stored locally</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Today's wrong guesses &amp; puzzle status</td><td>So the app remembers your progress if you close it mid-puzzle</td></tr>
+        <tr><td>Each past day's result: which puzzle, won or lost, guesses used, and whether a hint was used</td><td>Your streak, stats, trophies, and the calendar are all worked out from this</td></tr>
+        <tr><td>Whether you've seen the "How to Play" screen</td><td>So it only shows once</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="tag">What we don't do</div>
+    <h2>No accounts, no tracking, no ads</h2>
+    <ul>
+      <li>No sign-up, login, email address, or name is ever requested.</li>
+      <li>No analytics, advertising, or crash-reporting SDKs are included in the app.</li>
+      <li>Your guesses, streak, and stats are never uploaded anywhere. Uninstalling the app deletes everything it stored.</li>
+      <li>We don't sell or share data with anyone.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="tag">Feedback</div>
+    <h2>The one thing that can leave your device</h2>
+    <p>The About screen has an optional feedback form. If you write a message and tap Send, the text you typed is sent over an encrypted connection to <a href="https://web3forms.com">Web3Forms</a>, a form-delivery service, which forwards it to the developer by email. That is the only time the app sends anything, and it only happens when you tap Send.</p>
+    <ul>
+      <li>The app attaches nothing to your message: no name, email address, device identifier, or gameplay data.</li>
+      <li>As with any internet request, Web3Forms' servers can see the IP address the message came from. Their handling of it is covered by Web3Forms' own privacy policy, available on <a href="https://web3forms.com">their site</a>.</li>
+      <li>Anything you write in the message is up to you, so leave out personal details you'd rather not share. Because nothing identifies you, the developer can't reply unless you include a way to reach you.</li>
+      <li>To have a message you sent deleted, email the address below.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="tag">This website</div>
+    <h2>Counting visits, without cookies</h2>
+    <p>The website at playbadplot.com, including the web version of the game, uses <a href="https://www.cloudflare.com/web-analytics/">Cloudflare Web Analytics</a> to count visits. This applies to the website only. The iPhone app contains no analytics at all.</p>
+    <ul>
+      <li>It doesn't use cookies, doesn't store anything on your device, and doesn't follow you to other sites.</li>
+      <li>It records general facts about a visit: which page was opened, which site linked to it, the country, and the type of browser and device.</li>
+      <li>It doesn't record your guesses, your streak, or anything that identifies you, and the numbers are only ever seen in total.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="tag">Children's privacy</div>
+    <h2>Safe for any age, by design</h2>
+    <p>Bad Plot doesn't ask anyone for personal information, children included. There's no account system that could capture a child's identity, location, or contact details, and the feedback form is optional and never asks for any.</p>
+  </section>
+
+  <section>
+    <div class="tag">If this changes</div>
+    <h2>Future features get their own disclosure</h2>
+    <p>If Bad Plot later adds something that involves a third party, for example an affiliate "watch it now" link, an ad-supported hint unlock, or an online daily-puzzle sync, this policy will be updated <em>before</em> that feature ships, and it will say plainly what's collected, by whom, and why.</p>
+  </section>
+
+  <section>
+    <div class="tag">Contact</div>
+    <h2>Questions about this policy</h2>
+    <p>Reach out any time with questions about how Bad Plot handles data.</p>
+    <div class="contact-block">
+      <div class="label">Developer</div>
+      <p style="margin-bottom: 12px;">Jonathan Haines</p>
+      <div class="label">Contact</div>
+      <p style="margin-bottom: 0;"><a href="mailto:jc.haines19@gmail.com">jc.haines19@gmail.com</a>, or the Feedback option inside the app (About &rarr; Feedback).</p>
+    </div>
+  </section>
+
+  <footer>Bad Plot · a daily movie-guessing game. This policy covers the Bad Plot app and the website at playbadplot.com. Need help? See the <a href="/support/">support page</a>.</footer>
+  </div>
+</div>
+
+<!-- Cloudflare Web Analytics: counts visits, no cookies, no personal data -->
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eba1c969802645f2ad21d851d8fa3872"}'></script>
+</body>
+</html>
