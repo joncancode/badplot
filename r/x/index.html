@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bad Plot X/5: Out of guesses</title>
+<meta name="description" content="Missed this one. Kernel fell asleep. Bad Plot is a daily movie game: guess the film from the worst possible plot.">
+<meta name="theme-color" content="#7690C6">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Bad Plot">
+<meta property="og:title" content="Bad Plot X/5: Out of guesses">
+<meta property="og:description" content="Missed this one. Kernel fell asleep. Bad Plot is a daily movie game: guess the film from the worst possible plot.">
+<meta property="og:url" content="https://playbadplot.com/r/x/">
+<meta property="og:image" content="https://playbadplot.com/r/x/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kernel the popcorn mascot, missed this one. kernel fell asleep.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bad Plot X/5: Out of guesses">
+<meta name="twitter:description" content="Missed this one. Kernel fell asleep. Bad Plot is a daily movie game: guess the film from the worst possible plot.">
+<meta name="twitter:image" content="https://playbadplot.com/r/x/og.png">
+<meta name="apple-itunes-app" content="app-id=6822340440">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Figtree:wght@400;600;700&display=swap">
+<style>
+:root {
+  --field: #7690C6;
+  --card: #FFF6E9;
+  --ink: #2A2140;
+  --muted: #6E6486;
+  --button: #2A2140;
+  --on-button: #FFF6E9;
+  --display: "Baloo 2", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --body: "Figtree", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --card: #1E182D; --ink: #F6ECDD; --muted: #B3A9C9; --button: #E7B24E; --on-button: #2A2140; color-scheme: dark; }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  background: var(--field);
+  color: var(--ink);
+  font-family: var(--body);
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding: max(24px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+}
+main {
+  background: var(--card);
+  border-radius: 32px;
+  width: min(100%, 420px);
+  padding: 28px 24px 26px;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 4px;
+}
+.eyebrow { font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.kernel { width: 210px; height: auto; overflow: visible; margin: 6px 0 2px; }
+.score { font-family: var(--display); font-weight: 800; font-size: 72px; line-height: 0.95; }
+.caption { font-size: 17px; font-weight: 600; margin: 4px 0 18px; text-wrap: balance; }
+.play {
+  display: block; width: 100%; padding: 15px 18px; border-radius: 99px;
+  background: var(--button); color: var(--on-button); text-decoration: none;
+  font-family: var(--display); font-weight: 800; font-size: 19px;
+}
+.play:focus-visible, .app:focus-visible { outline: 3px solid var(--field); outline-offset: 3px; }
+.app { margin-top: 14px; color: var(--muted); font-size: 15px; font-weight: 600; }
+.pitch { margin: 18px 0 0; color: var(--muted); font-size: 14px; line-height: 1.45; max-width: 32ch; }
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow" id="eyebrow">Bad Plot</div>
+  <div id="kernel"></div>
+  <div class="score">X/5</div>
+  <p class="caption">Missed this one. Kernel fell asleep.</p>
+  <a class="play" href="/">Play today's puzzle</a>
+  <a class="app" href="https://apps.apple.com/app/id6822340440">Get the iPhone app</a>
+  <p class="pitch">One movie a day, described as badly as possible. Five guesses.</p>
+</main>
+<script>
+/*
+ * Kernel's result routines for the browser: the web result pages (public/r/)
+ * and the link preview images. Plain SVG + CSS, no build step. Inlined into
+ * each page by scripts/make-result-pages.mts.
+ *
+ * The same routines live in the app in src/components/Kernel.tsx (MOTION,
+ * POPS, RoutineFace). Keep the two in step when changing one.
+ *
+ * Exposes: KERNEL_CSS (string) and renderKernel(routine, { still }) -> SVG markup.
+ */
+/* eslint-disable */
+var KERNEL_CSS = [
+  '.kb{transform-box:fill-box;transform-origin:50% 100%}',
+  '.pop,.drop,.zz,.note{transform-box:fill-box;transform-origin:50% 50%}',
+  '@keyframes hop{0%,100%{transform:translateY(0) scale(1.06,.92)}12%{transform:translateY(0) scale(.94,1.08)}30%{transform:translateY(-16px) rotate(-8deg)}45%{transform:translateY(0) scale(1.06,.92)}57%{transform:translateY(0) scale(.94,1.08)}75%{transform:translateY(-16px) rotate(8deg)}90%{transform:translateY(0) scale(1.06,.92)}}',
+  '@keyframes rock{0%,100%{transform:rotate(-7deg)}25%{transform:rotate(0) translateY(-5px)}50%{transform:rotate(7deg)}75%{transform:rotate(0) translateY(-5px)}}',
+  '@keyframes shimmy{0%,100%{transform:none}20%{transform:translateX(-4px) skewX(5deg)}40%{transform:translateX(4px) skewX(-5deg)}60%{transform:translateX(-4px) skewX(5deg)}80%{transform:translateY(-3px)}}',
+  '@keyframes phew{0%,30%{transform:rotate(-4deg) translateX(-2px)}45%{transform:rotate(3deg) translateY(2px) scale(1.04,.95)}60%{transform:translateY(-7px) scale(.97,1.04)}75%,88%{transform:none}100%{transform:rotate(-4deg) translateX(-2px)}}',
+  '@keyframes tremble{0%,4%,8%,12%,16%,20%,24%,28%,32%,36%,40%,44%,48%{transform:translateX(-1.5px)}2%,6%,10%,14%,18%,22%,26%,30%,34%,38%,42%,46%,50%{transform:translateX(1.5px)}58%{transform:translateY(-20px) scale(.95,1.07)}68%{transform:scale(1.1,.88)}78%{transform:scale(.98,1.02)}88%,100%{transform:none}}',
+  '@keyframes breathe{0%,100%{transform:translateY(5px) scale(1.03,.96)}50%{transform:translateY(5px)}}',
+  '@keyframes popUp{0%{transform:translate(0,0) scale(.4);opacity:0}10%,70%{opacity:1}100%{transform:translate(var(--dx),-58px) rotate(var(--rot));opacity:0}}',
+  '@keyframes dropFall{0%,40%{transform:scale(0);opacity:0}50%{transform:scale(1);opacity:1}80%{transform:translate(4px,16px);opacity:1}100%{transform:translate(6px,24px) scale(.6);opacity:0}}',
+  '@keyframes zRise{0%{transform:none;opacity:0}20%{opacity:.9}100%{transform:translate(9px,-24px);opacity:0}}',
+  '@keyframes noteFloat{0%{transform:rotate(-10deg);opacity:0}20%{opacity:1}100%{transform:translate(10px,-26px) rotate(10deg);opacity:0}}',
+  '@keyframes shadesDrop{0%{transform:translateY(-26px);opacity:0}70%{transform:translateY(2px);opacity:1}100%{transform:none;opacity:1}}',
+  '.a-ace .kb{animation:hop 1.3s ease-in-out infinite}',
+  '.a-two .kb{animation:rock 1.4s ease-in-out infinite}',
+  '.a-three .kb{animation:shimmy 1.6s ease-in-out infinite}',
+  '.a-four .kb{animation:phew 2.6s ease-in-out infinite}',
+  '.a-five .kb{animation:tremble 2.8s ease-in-out infinite}',
+  '.a-miss .kb{animation:breathe 3.2s ease-in-out infinite}',
+  '.pop{animation:popUp 1.5s ease-out infinite}',
+  '.drop{animation:dropFall 2.6s ease-in infinite}',
+  '.zz{animation:zRise 2.6s ease-in infinite}',
+  '.note{animation:noteFloat 1.6s ease-out infinite}',
+  '.shades{transform-box:fill-box;animation:shadesDrop .9s .35s ease-out both}',
+  '.still *{animation:none!important}',
+  '@media (prefers-reduced-motion:reduce){.kb,.pop,.drop,.zz,.note,.shades{animation:none!important}.pop,.drop,.zz,.note{opacity:0}}'
+].join('\n');
+
+var renderKernel = (function () {
+  var YEL = '#EDBB53', YEL_HI = '#F6D488', YEL_D = '#E0B152', YEL_DD = '#C08B3E', INK = '#57422F',
+      BLUSH = '#E9A79B', TONGUE = '#B04B3E', POPC = '#F8EDD7', POP_HI = '#FEF7EA', POP_SH = '#E5D0A2',
+      BOX_R = '#D05E4E', BOX_RD = '#B04B3E', BOX_W = '#F6EAD3';
+  var BLOB = 'M45 7 C 68 0 91 8 95 34 C 100 60 95 106 56 106 C 34 107 17 84 17 54 C 17 25 27 13 45 7 Z';
+  var SHADE = 'M98 30 C 102 60 95 106 56 106 C 44 107 35 102 30 92 C 50 98 74 88 82 58 C 86 42 91 26 98 30 Z';
+  var HILITE = 'M44 8 C 32 12 24 25 23 40 C 30 33 38 33 44 35 C 49 21 51 12 44 8 Z';
+  var LEFT = { ace: 4, two: 3, three: 2, four: 1, five: 0, miss: 0 };
+
+  function ln(d, w) {
+    return '<path d="' + d + '" fill="none" stroke="' + INK + '" stroke-width="' + w + '" stroke-linecap="round" stroke-linejoin="round"/>';
+  }
+  function cheeks(r) {
+    return '<ellipse cx="35" cy="63" rx="' + r + '" ry="4.6" fill="' + BLUSH + '" opacity="0.85"/>' +
+           '<ellipse cx="77" cy="63" rx="' + r + '" ry="4.6" fill="' + BLUSH + '" opacity="0.85"/>';
+  }
+  var grin = '<path d="M47 66 Q57 80 67 66 Q57 72 47 66 Z" fill="' + INK + '"/><path d="M52 69 Q57 74 62 69 Z" fill="' + TONGUE + '"/>';
+  var shades = '<g class="shades">' +
+    '<path d="M36 46 h17 a2 2 0 0 1 2 2 v3 c0 5 -4 9 -9 9 h-1 c-6 0 -10 -4 -10 -10 v-2 a2 2 0 0 1 1 -2 Z" fill="#2A2140"/>' +
+    '<path d="M59 46 h17 a2 2 0 0 1 1 2 v2 c0 6 -4 10 -10 10 h-1 c-5 0 -9 -4 -9 -9 v-3 a2 2 0 0 1 2 -2 Z" fill="#2A2140"/>' +
+    '<path d="M55 48 q2 -2 4 0" fill="none" stroke="#2A2140" stroke-width="2.4"/>' +
+    '<path d="M40 49 l5 0" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.7"/>' +
+    '<path d="M63 49 l5 0" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.7"/></g>';
+
+  function face(id) {
+    switch (id) {
+      case 'ace': return cheeks(8) + grin + shades;
+      case 'two': return cheeks(8) + ln('M38 54 q9 -11 18 0', 3.6) + ln('M58 54 q9 -11 18 0', 3.6) + grin;
+      case 'three': return cheeks(6.5) + ln('M39 53 q7 -7 14 0', 3.4) + ln('M59 53 q7 -7 14 0', 3.4) + ln('M46 64 q10 8 20 0', 3);
+      case 'four':
+        return cheeks(6.5) + ln('M39 52 q7 4 14 0', 3.4) + ln('M59 52 q7 4 14 0', 3.4) +
+          ln('M38 42 q7 -3 13 0', 2.6) + ln('M61 42 q7 -3 13 0', 2.6) +
+          '<ellipse cx="57" cy="67" rx="4" ry="3.4" fill="' + INK + '"/>';
+      case 'five':
+        return cheeks(6.5) +
+          '<ellipse cx="46" cy="52" rx="6.1" ry="9.2" fill="' + INK + '"/><ellipse cx="66" cy="52" rx="6.1" ry="9.2" fill="' + INK + '"/>' +
+          '<circle cx="43.8" cy="49" r="2.8" fill="#fff"/><circle cx="63.8" cy="49" r="2.8" fill="#fff"/>' +
+          '<circle cx="48" cy="54.8" r="1.4" fill="#fff"/><circle cx="68" cy="54.8" r="1.4" fill="#fff"/>' +
+          ln('M37 40 q6 -4 13 -2', 2.6) + ln('M62 38 q7 -2 13 2', 2.6) + ln('M47 68 q2.5 -3 5 0 t5 0 t5 0', 2.8);
+      default:
+        return cheeks(6.5) + ln('M38 53 q9 8 18 0', 3.4) + ln('M58 53 q9 8 18 0', 3.4) +
+          '<ellipse cx="56" cy="67" rx="3.4" ry="4.4" fill="' + INK + '"/>';
+    }
+  }
+
+  function pop(x, y, dx, rot, delay, r) {
+    return '<g class="pop" style="--dx:' + dx + 'px;--rot:' + rot + 'deg;animation-delay:' + delay + 's">' +
+      '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + POPC + '" stroke="' + POP_SH + '" stroke-width="0.8"/></g>';
+  }
+  var DROP = 'M0 0 C 2.6 4.4 4.6 7 4.6 9.4 a4.6 4.6 0 0 1 -9.2 0 C -4.6 7 -2.6 4.4 0 0 Z';
+  function drop(x, y, s, delay) {
+    return '<g class="drop" style="animation-delay:' + delay + 's"><path d="' + DROP + '" transform="translate(' + x + ' ' + y + ') scale(' + s + ')" fill="#8CC8E2" stroke="#4E8FB0" stroke-width="1.2"/></g>';
+  }
+  function txt(cls, x, y, size, delay, glyph) {
+    return '<g class="' + cls + '" style="animation-delay:' + delay + 's"><text x="' + x + '" y="' + y + '" font-family="\'Baloo 2\', sans-serif" font-weight="800" font-size="' + size + '" fill="' + INK + '">' + glyph + '</text></g>';
+  }
+
+  function extras(id) {
+    switch (id) {
+      case 'ace': return pop(30, 88, -26, -40, 0, 4.5) + pop(42, 84, 6, 30, 0.35, 5) + pop(52, 88, 30, 60, 0.7, 4) + pop(36, 86, -12, 20, 1.05, 3.6) + pop(48, 86, 18, -30, 1.25, 4.2);
+      case 'two': return pop(34, 88, -18, -30, 0.2, 4.4) + pop(50, 88, 20, 40, 0.95, 4.2);
+      case 'three': return txt('note', 92, 30, 16, 0, '♪') + txt('note', 100, 22, 13, 0.8, '♫');
+      case 'four': return drop(90, 26, 1, 0);
+      case 'five': return drop(90, 26, 1, 0) + drop(20, 30, 0.8, 0.5);
+      case 'miss': return txt('zz', 84, 26, 12, 0, 'z') + txt('zz', 90, 18, 14, 0.85, 'z') + txt('zz', 96, 10, 16, 1.7, 'z');
+    }
+    return '';
+  }
+
+  function box(uid, left) {
+    var level = Math.max(0.12, Math.min(1, left / 5));
+    var d = (1 - level) * 6;
+    var fill = left === 0
+      ? '<circle cx="28" cy="101" r="2.2" fill="' + POPC + '"/><circle cx="44" cy="102" r="1.8" fill="' + POPC + '"/>'
+      : '<path d="M14 ' + (103 + d) + ' C 12 ' + (88 + d) + ' 23 ' + (78 + d) + ' 33 ' + (83 + d) + ' C 39 ' + (71 + d) + ' 51 ' + (74 + d) + ' 55 ' + (85 + d) + ' C 60 ' + (79 + d) + ' 63 ' + (89 + d) + ' 60 ' + (103 + d) + ' L60 108 L14 108 Z" fill="' + POPC + '"/>' +
+        '<path d="M22 ' + (94 + d) + ' Q36 ' + (100 + d) + ' 50 ' + (94 + d) + '" fill="none" stroke="' + POP_SH + '" stroke-width="3" stroke-linecap="round" opacity="0.55"/>' +
+        '<circle cx="26" cy="' + (86 + d) + '" r="2.6" fill="' + POP_HI + '"/><circle cx="41" cy="' + (80 + d) + '" r="3.1" fill="' + POP_HI + '"/><circle cx="53" cy="' + (87 + d) + '" r="2.4" fill="' + POP_HI + '"/>';
+    return '<g transform="translate(9 5) scale(0.92)">' +
+      '<defs><clipPath id="' + uid + 'bx"><path d="M14 100 L58 100 L62 133 L10 133 Z"/></clipPath></defs>' +
+      '<path d="M14 100 L58 100 L62 133 L10 133 Z" fill="' + BOX_W + '"/>' +
+      '<g clip-path="url(#' + uid + 'bx)">' +
+      '<path d="M17 100 L24 100 L21 134 L12 134 Z" fill="' + BOX_R + '"/>' +
+      '<path d="M31 100 L40 100 L41 134 L30 134 Z" fill="' + BOX_R + '"/>' +
+      '<path d="M48 100 L57 100 L67 134 L53 134 Z" fill="' + BOX_R + '"/>' +
+      '<path d="M45 100 L60 100 L68 134 L41 134 Z" fill="' + BOX_RD + '" opacity="0.12"/></g>' +
+      fill +
+      '<path d="M14 100 L13.5 104 Q36 108 57 103 L57 100 Q36 104 14 100 Z" fill="' + BOX_W + '"/></g>';
+  }
+
+  var n = 0;
+  return function renderKernel(id, opts) {
+    var still = !!(opts && opts.still);
+    var uid = 'k' + (n++);
+    return '<svg viewBox="-12 -14 152 150" class="kernel a-' + id + (still ? ' still' : '') + '" aria-hidden="true">' +
+      '<defs><clipPath id="' + uid + 'c"><path d="' + BLOB + '"/></clipPath>' +
+      '<radialGradient id="' + uid + 'h" cx="42%" cy="36%" r="58%"><stop offset="50%" stop-color="' + YEL_HI + '"/><stop offset="100%" stop-color="' + YEL_HI + '" stop-opacity="0"/></radialGradient></defs>' +
+      '<ellipse cx="52" cy="122" rx="46" ry="7.5" fill="#7A5220" opacity="0.12"/>' +
+      '<g class="kb">' +
+      '<path d="M44 10 C 41 1 41 -7 45 -10 C 46 -2 45 4 47 10 Z" fill="' + YEL_DD + '"/>' +
+      '<path d="M51 9 C 50 0 53 -9 58 -9 C 55 -1 53 4 54 9 Z" fill="' + YEL_DD + '"/>' +
+      '<path d="M58 10 C 59 2 63 -4 67 -3 C 63 1 61 4 61 10 Z" fill="' + YEL_DD + '"/>' +
+      '<path d="' + BLOB + '" fill="' + YEL + '"/>' +
+      '<g clip-path="url(#' + uid + 'c)"><path d="' + SHADE + '" fill="' + YEL_D + '"/><path d="' + HILITE + '" fill="url(#' + uid + 'h)"/></g>' +
+      face(id) + '</g>' +
+      (still ? '' : extras(id)) +
+      box(uid, LEFT[id] == null ? 0 : LEFT[id]) + '</svg>';
+  };
+})();
+
+document.head.insertAdjacentHTML('beforeend', '<style>' + KERNEL_CSS + '</style>');
+document.getElementById('kernel').innerHTML = renderKernel("miss");
+var n = new URLSearchParams(location.search).get('n');
+if (n && /^\d{1,5}$/.test(n)) document.getElementById('eyebrow').textContent = 'Bad Plot #' + n;
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eba1c969802645f2ad21d851d8fa3872"}'></script>
+</body>
+</html>

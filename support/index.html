@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bad Plot Support</title>
+<style>
+  /* Same look as the app: one color field, a cream card floating on it,
+     Baloo 2 over Figtree, rounded everything. Colors mirror
+     src/constants/tokens.ts, light and dark. */
+  :root {
+    --field: #E7B24E;
+    --card: #FFF6E9;
+    --raised: #FFFFFF;
+    --ink: #2A2140;
+    --muted: #6E6486;
+    --divider: rgba(42, 33, 64, 0.10);
+    --border: rgba(42, 33, 64, 0.22);
+    --butter: #E7B24E;
+    --mint: #73B7A2;
+    --on-accent: #2A2140;
+    --on-mint: #123E35;
+    --link: #3B45C9;
+    --shadow: 0 14px 26px rgba(42, 33, 64, 0.16);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --field: #7A5A1C;
+      --card: #1E182D;
+      --raised: #2E2646;
+      --ink: #F6ECDD;
+      --muted: #B0A6C6;
+      --divider: rgba(246, 236, 221, 0.10);
+      --border: rgba(246, 236, 221, 0.26);
+      --link: #AAB4FF;
+      --shadow: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--field);
+    color: var(--ink);
+    font-family: 'Figtree', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px 16px 48px;
+  }
+  .card {
+    background: var(--card);
+    border-radius: 30px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .band {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 24px 32px 16px;
+  }
+  .wordmark {
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    letter-spacing: -0.3px;
+    line-height: 1.1;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .doc-label {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    color: var(--on-accent);
+    background: var(--butter);
+    border-radius: 999px;
+    padding: 6px 14px;
+  }
+  .hero {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 8px 32px 28px;
+    border-bottom: 1px solid var(--divider);
+  }
+  .hero img {
+    width: 112px;
+    height: auto;
+    flex: none;
+  }
+  .meta {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+  h1 {
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: clamp(28px, 6vw, 38px);
+    letter-spacing: -0.3px;
+    line-height: 1.15;
+    text-wrap: balance;
+    margin: 0 0 8px;
+  }
+  .lede {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0;
+    max-width: 60ch;
+  }
+  section {
+    padding: 28px 32px;
+    border-bottom: 1px solid var(--divider);
+  }
+  .tag {
+    display: inline-block;
+    background: var(--mint);
+    color: var(--on-mint);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 6px 14px;
+    margin-bottom: 14px;
+  }
+  h2 {
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 23px;
+    line-height: 1.2;
+    margin: 0 0 12px;
+    text-wrap: balance;
+  }
+  p {
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 0 0 14px;
+    max-width: 62ch;
+  }
+  p:last-child { margin-bottom: 0; }
+  ul {
+    margin: 0 0 14px;
+    padding-left: 20px;
+    max-width: 62ch;
+  }
+  ul:last-child { margin-bottom: 0; }
+  li {
+    font-size: 15px;
+    line-height: 1.65;
+    margin-bottom: 8px;
+  }
+  li:last-child { margin-bottom: 0; }
+  strong { font-weight: 700; }
+  a { color: var(--link); font-weight: 700; }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 4px 0;
+    font-size: 14px;
+  }
+  .data-table th {
+    text-align: left;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 12px 10px 0;
+    border-bottom: 1.5px solid var(--border);
+  }
+  .data-table td {
+    padding: 12px 12px 12px 0;
+    border-bottom: 1px solid var(--divider);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .faq-item { margin-bottom: 22px; }
+  .faq-item:last-child { margin-bottom: 0; }
+  .faq-q {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  .contact-block {
+    background: var(--raised);
+    border: 1.5px solid var(--border);
+    border-radius: 18px;
+    padding: 18px 20px;
+    margin-top: 16px;
+  }
+  .contact-block .label {
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  footer {
+    padding: 22px 32px 26px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  @media (max-width: 520px) {
+    .band { padding: 20px 20px 12px; }
+    .hero { flex-direction: column; align-items: flex-start; gap: 12px; padding: 4px 20px 24px; }
+    .hero img { width: 88px; }
+    section { padding: 24px 20px; }
+    footer { padding: 20px; }
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="page">
+  <div class="card">
+  <div class="band">
+    <a class="wordmark" href="/">Bad Plot</a>
+    <div class="doc-label">Support</div>
+  </div>
+
+  <div class="hero">
+    <img src="/kernel.svg" alt="Kernel, the Bad Plot mascot: a smiling popcorn kernel behind a striped popcorn box" width="112" height="111">
+    <div>
+      <h1>Need a hand with Bad Plot?</h1>
+      <p class="lede">Answers to the most common questions, and a direct line if yours isn't here.</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="tag">FAQ</div>
+    <h2>Common questions</h2>
+
+    <div class="faq-item">
+      <p class="faq-q">My streak or stats disappeared.</p>
+      <p>Progress is stored only on your device, not in an account. Reinstalling the app, switching phones, or clearing app data will reset your streak and stats. There's currently no way to back them up or transfer them. This is on the roadmap.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-q">I typed the right movie and it said I was wrong.</p>
+      <p>Guesses are checked with some tolerance for typos, missing "The"/"A" articles, and punctuation, so "Godfather" and "the godfather" both work. If a correct-seeming guess still isn't accepted, it's likely a genuine typo past that tolerance, or an alternate title Bad Plot doesn't recognize yet. Let us know which puzzle and what you typed, and we'll add it.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-q">Is there a way to skip today's puzzle or see tomorrow's early?</p>
+      <p>No. One puzzle a day, same for everyone, is the whole point. There's no skip, no preview, no way to play ahead.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="faq-q">Does the daily puzzle cost anything?</p>
+      <p>No. The daily puzzle is free to play, with no ads and no account needed.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="tag">Contact</div>
+    <h2>Still stuck?</h2>
+    <p>Send a note with as much detail as you can: which puzzle, what you were doing, and what happened instead of what you expected. You can email, or use the Feedback option inside the app (Stats &rarr; About &rarr; Send feedback). In-app feedback is anonymous, so include an email address if you'd like a reply.</p>
+    <div class="contact-block">
+      <div class="label">Email</div>
+      <p style="margin-bottom: 0;"><a href="mailto:jc.haines19@gmail.com">jc.haines19@gmail.com</a></p>
+    </div>
+  </section>
+
+  <footer>Bad Plot · a daily movie-guessing game. See also the <a href="/privacy/">privacy policy</a>.</footer>
+  </div>
+</div>
+
+<!-- Cloudflare Web Analytics: counts visits, no cookies, no personal data -->
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "eba1c969802645f2ad21d851d8fa3872"}'></script>
+</body>
+</html>
